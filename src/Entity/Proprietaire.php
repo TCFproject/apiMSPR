@@ -16,7 +16,7 @@ class Proprietaire
     private ?int $id = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?User $User = null;
+    private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'proprietaire', targetEntity: Plante::class, orphanRemoval: true)]
     private Collection $plantes;
@@ -37,12 +37,12 @@ class Proprietaire
 
     public function getUser(): ?User
     {
-        return $this->User;
+        return $this->user;
     }
 
     public function setUser(?User $User): self
     {
-        $this->User = $User;
+        $this->user = $User;
 
         return $this;
     }

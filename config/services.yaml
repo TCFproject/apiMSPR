@@ -24,5 +24,13 @@ services:
     # please note that last definitions always *replace* previous ones
 
     App\Util\IplantTest: '@App\Util\UserTest'
-    App\Repository\IUserRepository: '@App\Repository\MockUserRepository'
+
+    App\Repository\IUserRepository:
+        class: 'App\Repository\UserRepository'
+        public: true
+
+    App\Repository\IProprioRepo:
+        class: 'App\Repository\ProprietaireRepository'
+        public: true
+
     App\Service\IUserService: '@App\Service\UserService'

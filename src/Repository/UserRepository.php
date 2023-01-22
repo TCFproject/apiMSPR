@@ -3,70 +3,50 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use App\Service\IUserService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 
-class UserRepository implements IUserRepository
+/**
+ * @extends ServiceEntityRepository<User>
+ *
+ * @method User|null find($id, $lockMode = null, $lockVersion = null)
+ * @method User|null findOneBy(array $criteria, array $orderBy = null)
+ * @method User[]    findAll()
+ * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class UserRepository extends ServiceEntityRepository implements IUserRepository
 {
-    private $userRepository;
-    private $em;
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->em = $em;
-        $this->userRepository = $em->getRepository(User::class);
+        parent::__construct($registry, User::class);
     }
 
-    public function save(User $entity, bool $flush = false): void
+    public function save($entity, bool $flush = false): void
     {
-        /*$this->getEntityManager()->persist($entity);
+        if (!$entity instanceof User){
+            throw new Exception("Les paramètres doivent être des Botanistes.");
+        }
+        $this->getEntityManager()->persist($entity);
 
         if ($flush) {
             $this->getEntityManager()->flush();
-            $this->UserRepository->flush();
-        }*/
-        $this->em->persist($entity);
-        if ($flush) {
-            $this->em->flush();
         }
     }
 
-    public function remove(User $entity, bool $flush = false): void
+    public function remove($entity, bool $flush = false): void
     {
-        /*$this->getEntityManager()->remove($entity);
+        if (!$entity instanceof User){
+            throw new Exception("Les paramètres doivent être des Botanistes.");
+        }
+        $this->getEntityManager()->remove($entity);
 
         if ($flush) {
             $this->getEntityManager()->flush();
-            $this->UserRepository->flush();
-        }*/
-        $this->em->remove($entity);
-        if ($flush) {
-            $this->em->flush();
         }
     }
-    public function findAll()
-    {
-        // TODO: Implement findAll() method.
-        return $this->userRepository->findAll();
-    }
 
-    public function find($id, $lockMode = null, $lockVersion = null)
-    {
-        // TODO: Implement find() method.
-        return $this->userRepository->find($id);
-    }
-
-    public function findOneBy(array $criteria, array $orderBy = null)
-    {
-        // TODO: Implement findOneBy() method.
-    }
-
-    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
-    {
-        // TODO: Implement findBy() method.
-    }
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */

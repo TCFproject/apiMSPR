@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Proprietaire;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<Proprietaire>
@@ -14,15 +15,18 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Proprietaire[]    findAll()
  * @method Proprietaire[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ProprietaireRepository extends ServiceEntityRepository
+class ProprietaireRepository extends ServiceEntityRepository implements IProprioRepo
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Proprietaire::class);
     }
 
-    public function save(Proprietaire $entity, bool $flush = false): void
+    public function save($entity, bool $flush = false): void
     {
+        if (!$entity instanceof Proprietaire){
+            throw new Exception("Les paramètres doivent être des Botanistes.");
+        }
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
@@ -30,8 +34,11 @@ class ProprietaireRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Proprietaire $entity, bool $flush = false): void
+    public function remove($entity, bool $flush = false): void
     {
+        if (!$entity instanceof Proprietaire){
+            throw new Exception("Les paramètres doivent être des Botanistes.");
+        }
         $this->getEntityManager()->remove($entity);
 
         if ($flush) {
