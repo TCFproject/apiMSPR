@@ -23,11 +23,11 @@ class UserRepository extends ServiceEntityRepository implements IUserRepository
         parent::__construct($registry, User::class);
     }
 
-    public function save($entity, bool $flush = false): void
+    public function save(User $entity, bool $flush = false): void
     {
-        if (!$entity instanceof User){
+        /*if (!$entity instanceof User){
             throw new Exception("Les paramètres doivent être des Botanistes.");
-        }
+        }*/
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
@@ -35,11 +35,11 @@ class UserRepository extends ServiceEntityRepository implements IUserRepository
         }
     }
 
-    public function remove($entity, bool $flush = false): void
+    public function remove(User $entity, bool $flush = false): void
     {
-        if (!$entity instanceof User){
+        /*if (!$entity instanceof User){
             throw new Exception("Les paramètres doivent être des Botanistes.");
-        }
+        }*/
         $this->getEntityManager()->remove($entity);
 
         if ($flush) {

@@ -15,7 +15,7 @@ use Exception;
  * @method Botaniste[]    findAll()
  * @method Botaniste[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class BotanisteRepository extends ServiceEntityRepository implements IUserRepository
+class BotanisteRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

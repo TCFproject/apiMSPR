@@ -23,10 +23,14 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\Util\IplantTest: '@App\Util\UserTest'
-
     App\Repository\IUserRepository:
         class: 'App\Repository\UserRepository'
+        public: true
+
+    App\Repository\UserRepository:
+        public: true
+
+    App\Repository\ProprietaireRepository:
         public: true
 
     App\Repository\IProprioRepo:

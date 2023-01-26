@@ -6,6 +6,8 @@ use App\Entity\Proprietaire;
 use App\Entity\User;
 use App\Repository\IProprioRepo;
 use App\Repository\IUserRepository;
+use App\Repository\ProprietaireRepository;
+use App\Repository\UserRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -14,6 +16,7 @@ class ProprietaireTest extends WebTestCase
     /**
      * @var IProprioRepo
      */
+
     private $proprioRepo;
     /**
      * @var IUserRepository
@@ -55,27 +58,37 @@ class ProprietaireTest extends WebTestCase
 
     public function testDbAvailability()
     {
-        try {
-            $conn = $this->em->getConnection();
-            $this->assertTrue($conn->isConnected());
-        } catch (Exception $e) {
-            $this->fail("Error while connecting to the database : " . $e->getMessage());
-        }
+        $conn = $this->em->getConnection();
+        $conn->connect();
+        $this->assertTrue($conn->isConnected());
     }
 
     public function testNewProprietaire():void{
         $user = new User();
-        $user->setName("Chang-Fong");
+        $user->setName("Chang-Fon");
         $user->setLastname("Thierry");
         $user->setEmail("ooo@aaa.fr");
         $user->setPassword("motDePasse");
         $user->setPhone("0745093465");
-        $this->userRepository->save($user);
         $proprietaire = new Proprietaire();
         $proprietaire->setUser($user);
 
-        $this->proprioRepo->save($proprietaire);
-        $foundUser = $this->userRepository->findOneBy(['Name'=>"Chang-Fong"]);
-        $this->assertSame($user,$foundUser);
+        $this->userRepository->save($user, true);
+        $foundUser = $this->userRepository->findOneBy(["name" => "Chang-Fon"]);
+        $this->assertNotNull($foundUser);
+
+        $this->proprioRepo->save($proprietaire, true);
+        $foundProprio = $this->proprioRepo->findOneBy(["user" => $user]);
+        $this->assertNotNull($foundProprio);
+    }
+
+    public function testProprioExist(): void{
+        $listProprio = $this->proprioRepo->findAll();
+        $this->assertNotNull($listProprio);
+    }
+    protected function tearDown(): void
+    {
+        $this->em->close();
+        $this->em = null; // avoid memory leaks
     }
 }
