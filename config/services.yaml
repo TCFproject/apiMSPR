@@ -37,4 +37,8 @@ services:
         class: 'App\Repository\ProprietaireRepository'
         public: true
 
+    App\Repository\IBotanistRepo:
+        class: 'App\Repository\BotanisteRepository'
+        public: true
+
     App\Service\IUserService: '@App\Service\UserService'

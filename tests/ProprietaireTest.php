@@ -2,8 +2,10 @@
 
 namespace App\Tests;
 
+use App\Entity\Botaniste;
 use App\Entity\Proprietaire;
 use App\Entity\User;
+use App\Repository\IBotanistRepo;
 use App\Repository\IProprioRepo;
 use App\Repository\IUserRepository;
 use App\Repository\ProprietaireRepository;
@@ -16,12 +18,15 @@ class ProprietaireTest extends WebTestCase
     /**
      * @var IProprioRepo
      */
-
     private $proprioRepo;
     /**
      * @var IUserRepository
      */
     private $userRepository;
+    /**
+     * @var IBotanistRepo
+     */
+    private $botanistRepo;
     private $em;
 
     protected function setUp(): void
@@ -30,6 +35,7 @@ class ProprietaireTest extends WebTestCase
         $this->em = $kernel->getContainer()->get('doctrine')->getManager();
         $this->userRepository = $kernel->getContainer()->get(IUserRepository::class);
         $this->proprioRepo = $kernel->getContainer()->get(IProprioRepo::class);
+        $this->botanistRepo = $kernel->getContainer()->get(IBotanistRepo::class);
     }
 
     public function testSetEntity(): void
@@ -82,6 +88,24 @@ class ProprietaireTest extends WebTestCase
         $this->assertNotNull($foundProprio);
     }
 
+    public function testNewBotanist(): void{
+        $user = new User();
+        $user->setName("Chang");
+        $user->setLastname("Thierry");
+        $user->setEmail("ooo@aaa.fr");
+        $user->setPassword("motDePasse");
+        $user->setPhone("0745093465");
+        $botanist = new Botaniste();
+        $botanist->setUser($user);
+
+        $this->userRepository->save($user, true);
+        $foundUser = $this->userRepository->findOneBy(["name" => "Chang"]);
+        $this->assertNotNull($foundUser);
+
+        $this->botanistRepo->save($botanist, true);
+        $foundBota = $this->botanistRepo->findOneBy(["user" => $user]);
+        $this->assertNotNull($foundBota);
+    }
     public function testProprioExist(): void{
         $listProprio = $this->proprioRepo->findAll();
         $this->assertNotNull($listProprio);

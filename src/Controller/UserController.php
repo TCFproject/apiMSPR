@@ -12,8 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     #[Route('/user', name: 'app_user')]
-    public function index(UserRepository $proprioRepo): JsonResponse
+    public function index(IUserRepository $proprioRepo): JsonResponse
     {
-        return $this->json($proprioRepo->find(1)->getName(), headers: ['Content-Type' => 'application/json;charset=UTF-8']);
+        return $this->json($proprioRepo, headers: ['Content-Type' => 'application/json;charset=UTF-8']);
     }
 }
