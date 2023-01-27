@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Botaniste;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<Botaniste>
@@ -14,15 +15,18 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Botaniste[]    findAll()
  * @method Botaniste[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class BotanisteRepository extends ServiceEntityRepository
+class BotanisteRepository extends ServiceEntityRepository implements IBotanistRepo
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Botaniste::class);
     }
 
-    public function save(Botaniste $entity, bool $flush = false): void
+    public function save($entity, bool $flush = false): void
     {
+        if (!$entity instanceof Botaniste){
+            throw new Exception("Les paramètres doivent être des Botanistes.");
+        }
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
@@ -30,8 +34,11 @@ class BotanisteRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Botaniste $entity, bool $flush = false): void
+    public function remove($entity, bool $flush = false): void
     {
+        if (!$entity instanceof Botaniste){
+            throw new Exception("Les paramètres doivent être des Botanistes.");
+        }
         $this->getEntityManager()->remove($entity);
 
         if ($flush) {

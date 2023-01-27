@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Repository\IUserRepository;
+use App\Util\TypeUser;
 
 class MockUserService implements IUserService
 {
@@ -36,5 +37,10 @@ class MockUserService implements IUserService
     {
         // TODO: Implement getOneUsers() method.
         return json_encode($this->userRepository->find($id));
+    }
+
+    public function signUp(string $name, string $lastname, string $email, string $psw, string $tel, TypeUser $typeUser): void
+    {
+        // TODO: Implement signUp() method.
     }
 }

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Proprietaire;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<Proprietaire>
@@ -14,7 +15,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Proprietaire[]    findAll()
  * @method Proprietaire[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ProprietaireRepository extends ServiceEntityRepository
+class ProprietaireRepository extends ServiceEntityRepository implements IProprioRepo
 {
     public function __construct(ManagerRegistry $registry)
     {
