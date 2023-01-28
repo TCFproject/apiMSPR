@@ -3,14 +3,13 @@
 namespace App\Tests;
 
 use App\Entity\Botaniste;
+use App\Entity\Plante;
 use App\Entity\Proprietaire;
 use App\Entity\User;
 use App\Repository\IBotanistRepo;
+use App\Repository\IPlantRepository;
 use App\Repository\IProprioRepo;
 use App\Repository\IUserRepository;
-use App\Repository\ProprietaireRepository;
-use App\Repository\UserRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ProprietaireTest extends WebTestCase
@@ -27,6 +26,11 @@ class ProprietaireTest extends WebTestCase
      * @var IBotanistRepo
      */
     private $botanistRepo;
+
+    /**
+     * @var IPlantRepository
+     */
+    private $plantRepo;
     private $em;
 
     protected function setUp(): void
@@ -36,6 +40,7 @@ class ProprietaireTest extends WebTestCase
         $this->userRepository = $kernel->getContainer()->get(IUserRepository::class);
         $this->proprioRepo = $kernel->getContainer()->get(IProprioRepo::class);
         $this->botanistRepo = $kernel->getContainer()->get(IBotanistRepo::class);
+        $this->plantRepo = $kernel->getContainer()->get(IPlantRepository::class);
     }
 
     public function testSetEntity(): void
@@ -81,11 +86,11 @@ class ProprietaireTest extends WebTestCase
 
         $this->userRepository->save($user, true);
         $foundUser = $this->userRepository->findOneBy(["name" => "Chang-Fon"]);
-        $this->assertNotNull($foundUser);
+        $this->assertEquals($user->getName(),$foundUser->getName());
 
         $this->proprioRepo->save($proprietaire, true);
         $foundProprio = $this->proprioRepo->findOneBy(["user" => $user]);
-        $this->assertNotNull($foundProprio);
+        $this->assertSame($proprietaire, $foundProprio);
     }
 
     public function testNewBotanist(): void{
@@ -100,16 +105,38 @@ class ProprietaireTest extends WebTestCase
 
         $this->userRepository->save($user, true);
         $foundUser = $this->userRepository->findOneBy(["name" => "Chang"]);
-        $this->assertNotNull($foundUser);
+        $this->assertEquals($user->getName(),$foundUser->getName());
 
         $this->botanistRepo->save($botanist, true);
         $foundBota = $this->botanistRepo->findOneBy(["user" => $user]);
-        $this->assertNotNull($foundBota);
+        $this->assertSame($botanist, $foundBota);
     }
     public function testProprioExist(): void{
         $listProprio = $this->proprioRepo->findAll();
         $this->assertNotNull($listProprio);
     }
+
+    public function testAddPlant(): void {
+        $user = $this->userRepository->findOneBy(["name" => "Chang-Fon"]);
+        $proprio = $this->proprioRepo->findOneBy(['user'=>$user]);
+        $newPlante = new Plante();
+        $newPlante->setNom('Sapin');
+        $newPlante->setNomLatin('Abies');
+        $newPlante->setPhoto('sapin.png');
+        $newPlante->setProprietaire($proprio);
+        $this->plantRepo->save($newPlante, true);
+
+        $foundPlante = $this->plantRepo->findOneBy([
+            'nom' => 'Sapin',
+            'nom_latin' => 'Abies'
+            ]);
+        $this->assertEquals('Sapin',$foundPlante->getNom());
+    }
+
+    /*public function testAddEntretien(): void{
+
+    }*/
+
     protected function tearDown(): void
     {
         $this->em->close();

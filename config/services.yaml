@@ -27,10 +27,8 @@ services:
         class: 'App\Repository\UserRepository'
         public: true
 
-    App\Repository\UserRepository:
-        public: true
-
-    App\Repository\ProprietaireRepository:
+    App\Repository\IPlantRepository:
+        class: 'App\Repository\PlanteRepository'
         public: true
 
     App\Repository\IProprioRepo:

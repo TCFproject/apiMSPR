@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Proprietaire;
+use App\Repository\BaseInterface\IRepoFindShare;
 
 interface IProprioRepo extends IRepoFindShare
 {
