@@ -39,4 +39,12 @@ services:
         class: 'App\Repository\BotanisteRepository'
         public: true
 
+    App\Repository\IEntretienRepo:
+        class: 'App\Repository\EntretienRepository'
+        public: true
+
+    App\Repository\ICommentaryRepository:
+        class: 'App\Repository\CommentaryRepository'
+        public: true
+
     App\Service\IUserService: '@App\Service\UserService'

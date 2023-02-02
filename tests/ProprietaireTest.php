@@ -3,10 +3,14 @@
 namespace App\Tests;
 
 use App\Entity\Botaniste;
+use App\Entity\Commentary;
+use App\Entity\Entretien;
 use App\Entity\Plante;
 use App\Entity\Proprietaire;
 use App\Entity\User;
 use App\Repository\IBotanistRepo;
+use App\Repository\ICommentaryRepository;
+use App\Repository\IEntretienRepo;
 use App\Repository\IPlantRepository;
 use App\Repository\IProprioRepo;
 use App\Repository\IUserRepository;
@@ -31,6 +35,16 @@ class ProprietaireTest extends WebTestCase
      * @var IPlantRepository
      */
     private $plantRepo;
+
+    /**
+     * @var IEntretienRepo
+     */
+    private $entretienRepo;
+
+    /**
+     * @var ICommentaryRepository
+     */
+    private $commentaryRepos;
     private $em;
 
     protected function setUp(): void
@@ -41,6 +55,8 @@ class ProprietaireTest extends WebTestCase
         $this->proprioRepo = $kernel->getContainer()->get(IProprioRepo::class);
         $this->botanistRepo = $kernel->getContainer()->get(IBotanistRepo::class);
         $this->plantRepo = $kernel->getContainer()->get(IPlantRepository::class);
+        $this->entretienRepo = $kernel->getContainer()->get(IEntretienRepo::class);
+        $this->commentaryRepos = $kernel->getContainer()->get(ICommentaryRepository::class);
     }
 
     public function testSetEntity(): void
@@ -133,10 +149,54 @@ class ProprietaireTest extends WebTestCase
         $this->assertEquals('Sapin',$foundPlante->getNom());
     }
 
-    /*public function testAddEntretien(): void{
+    public function testAddEntretien(): void {
+        $user = $this->userRepository->findOneBy(["name" => "Chang-Fon"]);
+        $proprio = $this->proprioRepo->findOneBy(['user'=> $user]);
+        $plant = $this->plantRepo->findOneBy([
+            'nom' => 'Sapin',
+            'nom_latin' => 'Abies'
+        ]);
+        $new_entretien = new Entretien();
+        $new_entretien->setPlant($plant);
+        $new_entretien->setTitle("Pppp");
+        $new_entretien->setDate(new \DateTime());
+        $new_entretien->setIntitule("aaaaaa");
+        $new_entretien->setPhoto("photo.png");
 
-    }*/
+        $proprio->addEntretien($new_entretien);
+        $this->entretienRepo->save($new_entretien, true);
+        $foundEntretien = $this->entretienRepo->findOneBy([
+            "title" => "Pppp",
+            "intitule" => "aaaaaa",
+            "photo" => "photo.png"
+        ]);
+        $this->assertEquals("Pppp", $foundEntretien->getTitle());
+        $this->assertEquals("Chang-Fon", $foundEntretien->getProprietaire()->getUser()->getName());
+        $this->assertEquals("Sapin", $foundEntretien->getPlant()->getNom());
+    }
 
+    public function testAddCommentary() {
+        $user = $this->userRepository->findOneBy(["name" => "Chang"]);
+        $botanist = $this->botanistRepo->findOneBy(["user" => $user]);
+        $plant = $this->plantRepo->findOneBy([
+            'nom' => 'Sapin',
+            'nom_latin' => 'Abies'
+        ]);
+        $commentaire = new Commentary();
+        $commentaire->setPlant($plant);
+        $commentaire->setComment("Arroser");
+        $botanist->addCommentary($commentaire);
+        $this->commentaryRepos->save($commentaire, true);
+
+        $foundComment = $this->commentaryRepos->findOneBy([
+            "comment" => "Arroser",
+            "botanist" => $botanist,
+            "plant" => $plant
+            ]);
+        $this->assertEquals("Arroser",$foundComment->getComment());
+        $this->assertEquals("Sapin",$foundComment->getPlant()->getNom());
+        $this->assertEquals("Chang",$foundComment->getBotanist()->getUser()->getName());
+    }
     protected function tearDown(): void
     {
         $this->em->close();
