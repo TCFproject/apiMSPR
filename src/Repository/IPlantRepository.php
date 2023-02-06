@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Plante;
+use App\Repository\BaseInterface\IRepoFindShare;
 
 interface IPlantRepository extends IRepoFindShare
 {

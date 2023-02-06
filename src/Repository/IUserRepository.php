@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Repository\BaseInterface\IRepoFindShare;
 
 interface IUserRepository extends IRepoFindShare
 {

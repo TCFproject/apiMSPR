@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Commentary[]    findAll()
  * @method Commentary[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CommentaryRepository extends ServiceEntityRepository
+class CommentaryRepository extends ServiceEntityRepository implements ICommentaryRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

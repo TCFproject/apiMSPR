@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Botaniste;
+use App\Repository\BaseInterface\IRepoFindShare;
 
 interface IBotanistRepo extends IRepoFindShare
 {
