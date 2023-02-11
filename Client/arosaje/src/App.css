@@ -36,3 +36,35 @@
     transform: rotate(360deg);
   }
 }
+/*--------------------------*/
+
+.typeSelector_labelLarge__aQBzx {
+  min-width: 50px;
+  min-height: 50px;
+}
+.typeSelector_label__L4ZOj {
+  padding: 10px;
+  border: 1px solid #011743;
+  border-radius: 16px;
+  background-color: #1b9431;
+  cursor: pointer;
+  text-align: center;
+}
+.headers {
+  background-color: lightgray;
+  padding: 20px;
+  text-align: center;
+}
+
+.navul {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nava {
+  color: black;
+  text-decoration: none;
+}
