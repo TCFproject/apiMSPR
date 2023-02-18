@@ -2,9 +2,11 @@
 
 namespace App\Service;
 
-use App\Entity\Proprietaire;
+use App\Entity\Entretien;
+use App\Entity\Plante;
 
-interface IPropriService
+interface IPropriService extends IUserService
 {
-    public function newProprietaire(Proprietaire $proprietaire);
+    public function addPlante(int $idProprio, Plante $plant): void;
+    public function addEntretien(int $idProprio, int $idPlante, Entretien $entretien): void;
 }

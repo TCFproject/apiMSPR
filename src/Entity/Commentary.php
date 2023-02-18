@@ -18,11 +18,11 @@ class Commentary
 
     #[ORM\ManyToOne(inversedBy: 'commentaries')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Botaniste $botanist = null;
+    private ?Plante $plant = null;
 
     #[ORM\ManyToOne(inversedBy: 'commentaries')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Plante $plant = null;
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -41,18 +41,6 @@ class Commentary
         return $this;
     }
 
-    public function getBotanist(): ?Botaniste
-    {
-        return $this->botanist;
-    }
-
-    public function setBotanist(?Botaniste $botanist): self
-    {
-        $this->botanist = $botanist;
-
-        return $this;
-    }
-
     public function getPlant(): ?Plante
     {
         return $this->plant;
@@ -61,6 +49,18 @@ class Commentary
     public function setPlant(?Plante $plant): self
     {
         $this->plant = $plant;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

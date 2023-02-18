@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -29,11 +31,25 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $phone = null;
 
-    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?Botaniste $botaniste = null;
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Role $role = null;
 
-    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?Proprietaire $proprietaire = null;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Entretien::class, orphanRemoval: true)]
+    private Collection $entretiens;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Commentary::class, orphanRemoval: true)]
+    private Collection $commentaries;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Plante::class, orphanRemoval: true)]
+    private Collection $plantes;
+
+    public function __construct()
+    {
+        $this->entretiens = new ArrayCollection();
+        $this->commentaries = new ArrayCollection();
+        $this->plantes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -100,46 +116,105 @@ class User
         return $this;
     }
 
-    public function getBotaniste(): ?Botaniste
+    public function getRole(): ?Role
     {
-        return $this->botaniste;
+        return $this->role;
     }
 
-    public function setBotaniste(?Botaniste $botaniste): self
+    public function setRole(?Role $role): self
     {
-        // unset the owning side of the relation if necessary
-        if ($botaniste === null && $this->botaniste !== null) {
-            $this->botaniste->setUser(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($botaniste !== null && $botaniste->getUser() !== $this) {
-            $botaniste->setUser($this);
-        }
-
-        $this->botaniste = $botaniste;
+        $this->role = $role;
 
         return $this;
     }
-    public function getProprietaire(): ?Proprietaire
+
+    /**
+     * @return Collection<int, Entretien>
+     */
+    public function getEntretiens(): Collection
     {
-        return $this->proprietaire;
+        return $this->entretiens;
     }
 
-    public function setProprietaire(?Proprietaire $proprietaire): self
+    public function addEntretien(Entretien $entretien): self
     {
-        // unset the owning side of the relation if necessary
-        if ($proprietaire === null && $this->proprietaire !== null) {
-            $this->proprietaire->setUser(null);
+        if (!$this->entretiens->contains($entretien)) {
+            $this->entretiens->add($entretien);
+            $entretien->setUser($this);
         }
-
-        // set the owning side of the relation if necessary
-        if ($proprietaire !== null && $proprietaire->getUser() !== $this) {
-            $proprietaire->setUser($this);
-        }
-
-        $this->proprietaire = $proprietaire;
 
         return $this;
     }
+
+    public function removeEntretien(Entretien $entretien): self
+    {
+        if ($this->entretiens->removeElement($entretien)) {
+            // set the owning side to null (unless already changed)
+            if ($entretien->getUser() === $this) {
+                $entretien->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commentary>
+     */
+    public function getCommentaries(): Collection
+    {
+        return $this->commentaries;
+    }
+
+    public function addCommentary(Commentary $commentary): self
+    {
+        if (!$this->commentaries->contains($commentary)) {
+            $this->commentaries->add($commentary);
+            $commentary->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentary(Commentary $commentary): self
+    {
+        if ($this->commentaries->removeElement($commentary)) {
+            // set the owning side to null (unless already changed)
+            if ($commentary->getUser() === $this) {
+                $commentary->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Plante>
+     */
+    public function getPlantes(): Collection
+    {
+        return $this->plantes;
+    }
+
+    public function addPlante(Plante $plante): self
+    {
+        if (!$this->plantes->contains($plante)) {
+            $this->plantes->add($plante);
+            $plante->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlante(Plante $plante): self
+    {
+        if ($this->plantes->removeElement($plante)) {
+            // set the owning side to null (unless already changed)
+            if ($plante->getUser() === $this) {
+                $plante->setUser(null);
+            }
+        }
+        return $this;
+    }
+
 }
