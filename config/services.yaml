@@ -47,4 +47,10 @@ services:
         class: 'App\Repository\CommentaryRepository'
         public: true
 
-    App\Service\IUserService: '@App\Service\UserService'
+    App\Service\IBotanistService:
+        class: 'App\Service\BotanistService'
+        public: true
+
+    App\Service\IUserService:
+        class: 'App\Service\UserService'
+        public: true

@@ -31,7 +31,7 @@ class Entretien
 
     #[ORM\ManyToOne(inversedBy: 'entretiens')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Proprietaire $proprietaire = null;
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -98,14 +98,14 @@ class Entretien
         return $this;
     }
 
-    public function getProprietaire(): ?Proprietaire
+    public function getUser(): ?User
     {
-        return $this->proprietaire;
+        return $this->user;
     }
 
-    public function setProprietaire(?Proprietaire $proprietaire): self
+    public function setUser(?User $user): self
     {
-        $this->proprietaire = $proprietaire;
+        $this->user = $user;
 
         return $this;
     }

@@ -24,15 +24,15 @@ class Plante
     #[ORM\Column(length: 255)]
     private ?string $photo = null;
 
-    #[ORM\ManyToOne(inversedBy: 'plantes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Proprietaire $proprietaire = null;
-
     #[ORM\OneToMany(mappedBy: 'plant', targetEntity: Commentary::class)]
     private Collection $commentaries;
 
     #[ORM\OneToMany(mappedBy: 'plant', targetEntity: Entretien::class)]
     private Collection $entretiens;
+
+    #[ORM\ManyToOne(inversedBy: 'plantes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -77,18 +77,6 @@ class Plante
     public function setPhoto(string $photo): self
     {
         $this->photo = $photo;
-
-        return $this;
-    }
-
-    public function getProprietaire(): ?Proprietaire
-    {
-        return $this->proprietaire;
-    }
-
-    public function setProprietaire(?Proprietaire $proprietaire): self
-    {
-        $this->proprietaire = $proprietaire;
 
         return $this;
     }
@@ -149,6 +137,18 @@ class Plante
                 $entretien->setPlant(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
