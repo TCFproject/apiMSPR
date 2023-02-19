@@ -6,6 +6,7 @@ import  HomePage from './pages/HomePage';
 import  LoginPage from './pages/LoginPage';
 import React from 'react';
 import Navbar from './pages/Navbar';
+import Footer from './pages/Footer';
 import About from './pages/AboutPage';
 
 
@@ -15,8 +16,9 @@ function App() {
 
         <div className='App'>
          <Navbar /> 
-          <HomePage />
-          <About />
+         <Footer />
+          {/* <HomePage /> */}
+          {/* <About /> */}
         </div>
 
     //     <BrowserRouter>
