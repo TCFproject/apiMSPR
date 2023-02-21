@@ -1,11 +1,7 @@
-import  LoginPage from './LoginPage';
-import AboutPage from './AboutPage';
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-import HomePage from './HomePage';
-import { BrowserRouter,Link,Route,Routes } from 'react-router-dom';
-import ContactPage from './ContactPage';
 const Navbar = ()=>{
   
     // const clickOnBotaniste = ()=>{
@@ -22,7 +18,7 @@ const Navbar = ()=>{
 
     // }
     return(
-      <BrowserRouter>
+
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
           <Link to="/" className="navbar-brand">A Rosa-je</Link>
@@ -35,41 +31,25 @@ const Navbar = ()=>{
                 <a className="nav-link active" aria-current="page" href="#">Accueil</a>
               </li>
               <li className="nav-item">
-                <Link to="/Contact"className="nav-link" href="#">Contact</Link>
+                <Link to="/contact"className="nav-link" href="#">Contact</Link>
               </li>
               <li className="nav-item">
                 <Link to="/about" className="nav-link" href="#">A propos</Link>
               </li>
-              <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Services
-                </a>
-                
-                <ul className="dropdown-menu">
-                  <li><a className="dropdown-item" href="#">Garder des Plantes</a></li>
-                  <li><a className="dropdown-item" href="#">Proposer des plantes à gardé</a></li>
-                  <li><hr className="dropdown-divider"/></li>
-                  <li><Link to="/Login" className="dropdown-item" href="#">Nos Botanistes sont à votre écoute</Link></li>
-                </ul>
-              </li>
+
 
             </ul>
             <form className="d-flex" role="search">
-              <input className="form-control me-2" type="connexion" placeholder="Rechercher" aria-label="connexion"/>
-              <Link to="/Login" className="btn btn-outline-success" type="submit">Connexion</Link>
+              <input className="form-control me-2" type="recherche" placeholder="Rechercher" aria-label="recherche"/>
+              <button class="btn btn-outline-success" type="submit">Rechercher</button>
+              <Link to="/login" className="btn btn-outline-success" type="submit">Connexion</Link>
             </form>
           </div>
         </div>
       </nav> 
 
-      <Routes>
-        <Route path="/" element={<HomePage />}></Route>
-        <Route path="/Login" element={<LoginPage />}></Route>
-        <Route path="/about" element={<AboutPage />}></Route>
-        <Route path="/Contact" element={<ContactPage />}></Route>
-      </Routes>
 
-      </BrowserRouter>
+
 
     );
 }
