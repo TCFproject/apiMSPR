@@ -54,3 +54,7 @@ services:
     App\Service\IUserService:
         class: 'App\Service\UserService'
         public: true
+
+    App\Service\IPropriService:
+        class: 'App\Service\PropriService'
+        public: true

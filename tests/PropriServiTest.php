@@ -39,13 +39,16 @@ class PropriServiTest extends KernelTestCase
         $newPlant->setNom("flower");
         $newPlant->setNomLatin("flower_latin");
         $newPlant->setPhoto("coucou.png");
-        $this->PropriServ->addPlante(1, $newPlant);
+
+        $foundPropri = $this->PropriServ->signIn("ooo@aaa.fr", "aaaooo");
+        $this->PropriServ->addPlante($foundPropri->getId(), $newPlant);
 
         $recupPlant = $this->plantRepository->findOneBy([
             "nom" => "flower",
             "nom_latin" => "flower_latin",
             "photo" => "coucou.png"
         ]);
+
         $this->assertEquals("flower",$recupPlant->getNom());
         $this->assertEquals("flower_latin",$recupPlant->getNomLatin());
         $this->assertEquals("Chang-Fong", $recupPlant->getUser()->getName());
