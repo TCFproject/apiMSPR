@@ -12,10 +12,10 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class BotaServiTest extends KernelTestCase
 {
-    private IBotanistService $BotaServ;
+    private $BotaServ;
     private $entityManager;
     private $plantRepository;
-    private ICommentaryRepository $commentaryRepository;
+    private $commentaryRepository;
 
     protected function setUp(): void {
         $kernel = self::bootKernel();
@@ -30,7 +30,7 @@ class BotaServiTest extends KernelTestCase
         $this->BotaServ->signUp("Fabien", "Frederic", "iii@eee.fr", "iiieee", "0967124512");
         $foundPropri = $this->BotaServ->signIn("iii@eee.fr", "iiieee");
         $this->assertNotNull($foundPropri->getId());
-        $this->assertEquals("Botanist", $foundPropri->getRole()->getLabel());
+        $this->assertEquals("Botaniste", $foundPropri->getRole()->getLabel());
     }
     public function testAddCommentary() {
         $foundPropri = $this->BotaServ->signIn("iii@eee.fr", "iiieee");

@@ -1,4 +1,4 @@
 php bin/console doctrine:database:drop --force
 php bin/console doctrine:database:create
-symfony console doctrine:migrations:migrate
-yes
+echo yes | symfony console doctrine:migrations:migrate --no-interaction
+sqlite3 var/data.db "INSERT INTO role(label) VALUES('Botaniste'),('Proprietaire')"

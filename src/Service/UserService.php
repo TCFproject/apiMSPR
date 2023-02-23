@@ -26,12 +26,11 @@ class UserService implements IUserService
         $this->user->setPhone($tel);
     }
 
-    public function signIn(string $email, string $mdp): User
+    public function signIn(string $email, string $mdp)
     {
         $this->user = $this->userRepository->findOneBy([
             'email' => $email,
             'password' => $mdp
             ]);
-        return $this->user;
     }
 }

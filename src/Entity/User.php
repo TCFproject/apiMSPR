@@ -202,7 +202,6 @@ class User
             $this->plantes->add($plante);
             $plante->setUser($this);
         }
-
         return $this;
     }
 
@@ -216,5 +215,4 @@ class User
         }
         return $this;
     }
-
 }
