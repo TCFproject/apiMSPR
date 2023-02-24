@@ -35,13 +35,13 @@ class User
     #[ORM\JoinColumn(nullable: false)]
     private ?Role $role = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Entretien::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Entretien::class, cascade: ["persist"], orphanRemoval: true)]
     private Collection $entretiens;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Commentary::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Commentary::class, cascade: ["persist"], orphanRemoval: true)]
     private Collection $commentaries;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Plante::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Plante::class, cascade: ["persist"], orphanRemoval: true)]
     private Collection $plantes;
 
     public function __construct()

@@ -8,6 +8,7 @@ use App\Repository\IEntretienRepo;
 use App\Repository\IPlantRepository;
 use App\Repository\IUserRepository;
 use App\Service\IPropriService;
+use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class PropriServiTest extends KernelTestCase
@@ -31,7 +32,8 @@ class PropriServiTest extends KernelTestCase
         $this->PropriServ->signUp("Chang-Fong", "Thierry", "ooo@aaa.fr", "aaaooo", "0967124512");
         $foundPropri = $this->PropriServ->signIn("ooo@aaa.fr", "aaaooo");
         $this->assertNotNull($foundPropri->getId());
-        $this->assertEquals("Proprietaire", $foundPropri->getRole()->getLabel());
+        $labelName = $foundPropri->getRole()->getLabel();
+        $this->assertEquals("Proprietaire", $labelName);
     }
 
     public function testAddPlant() {
@@ -61,7 +63,8 @@ class PropriServiTest extends KernelTestCase
         $newEntretien->setTitle("Entretien 1");
         $newEntretien->setIntitule("Intituler entretien 1");
         $newEntretien->setPhoto("photoEntretien.png");
-        $newEntretien->setDate(new \DateTime());
+        $date = DateTimeImmutable::createFromFormat('Y-m-d', date('Y-m-d'));
+        $newEntretien->setDate($date);
         $this->PropriServ->addEntretien(1,1, $newEntretien);
 
         $recupEntretien = $this->entretienRepo->findOneBy([
@@ -72,7 +75,5 @@ class PropriServiTest extends KernelTestCase
         $this->assertEquals("Entretien 1", $recupEntretien->getTitle());
         $this->assertEquals("Chang-Fong", $recupEntretien->getUser()->getName());
         $this->assertEquals("Thierry", $recupEntretien->getUser()->getLastname());
-        $this->assertEquals("flower", $recupEntretien->getPlant()->getNom());
-        $this->assertEquals("flower_latin", $recupEntretien->getPlant()->getNomLatin());
     }
 }

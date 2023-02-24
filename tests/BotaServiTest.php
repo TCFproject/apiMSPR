@@ -40,7 +40,7 @@ class BotaServiTest extends KernelTestCase
             "nom_latin" => "flower_latin",
             "photo" => "coucou.png"
         ]);
-        $this->BotaServ->addCommentary("aaa",$foundPropri->getId(), $recupPlant->getId());
+        $this->BotaServ->addCommentary("aaa", $recupPlant->getId(), $foundPropri->getId());
         $foundComment = $this->commentaryRepository->findOneBy([
             "comment" => "aaa",
             "plant" => $recupPlant,
