@@ -2,9 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Entretien;
+use App\Entity\Plante;
 use App\Service\IPropriService;
+use DateTimeImmutable;
 use Proxies\__CG__\App\Entity\Proprietaire;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,25 +21,32 @@ use Symfony\Component\Serializer\Serializer;
 
 class ProprietaireController extends AbstractController
 {
-    #[Route('/proprietaire', name: 'app_proprietaire')]
-    public function signIn(IPropriService $propriService, Request $request): Response
+    private IPropriService $propriService;
+
+    public function __construct(IPropriService $propriService)
     {
-        $email = $request->request->get('email');
-        $mdp = $request->request->get('mdp');
-        $proprietaire = $propriService->signIn($email, $mdp);
+        $this->propriService = $propriService;
+    }
+
+    #[Route('/proprietaire', name: 'app_proprietaire', methods: ['GET'])]
+    public function signIn(Request $request): Response
+    {
+        $email = $request->query->get('email');
+        $mdp = $request->query->get('mdp');
+        $proprietaire = $this->propriService->signIn($email, $mdp);
 
         $encoder = [new JsonEncoder()];
         $normalizers = [new ObjectNormalizer()];
         $serializer = new Serializer($normalizers, $encoder);
         $identity = $serializer->serialize($proprietaire, 'json', ['circular_reference_handler' => function ($object) {
-            return $object;
+            return $object->getId();
         }]);
 
         return new Response($identity, headers: ['Content-Type' => 'application/json;charset=UTF-8']);
     }
 
     #[Route('/proprietaire/new', name: 'app_proprietaire_new', methods: ['POST'])]
-    public function signUp(IPropriService $propriService, Request $request)
+    public function signUp(Request $request)
     {
         $name = $request->request->get('name');
         $lastName = $request->request->get('lastname');
@@ -41,6 +54,65 @@ class ProprietaireController extends AbstractController
         $pwd = $request->request->get('mdp');
         $tel = $request->request->get('phone');
 
-        $propriService->signUp($name, $lastName, $email, $pwd, $tel);
+        $this->propriService->signUp($name, $lastName, $email, $pwd, $tel);
+    }
+
+    #[Route('/proprietaire/newPlant', name: 'app_proprietaire_newPlant', methods: ['POST'])]
+    public function addPlant(Request $request, Filesystem $filesystem){
+        $proprio = $request->request->get("id");
+        $photo = $request->files->get('photo');
+        $nomPlante = $request->request->get("nom");
+        $nom_latinPlante = $request->request->get("nom_latin");
+        if (!$photo) {
+            throw new FileException('No file uploaded');
+        }
+        $newPlante = new Plante();
+        $newPlante->setNom($nomPlante);
+        $newPlante->setNomLatin($nom_latinPlante);
+        $newPlante->setPhoto($photo->getClientOriginalName());
+        $this->propriService->addPlante($proprio, $newPlante);
+
+        if ($photo instanceof UploadedFile) {
+            $photoname = $photo->getClientOriginalName();
+            if (!$filesystem->exists($this->getParameter('photo'))){
+                $filesystem->mkdir($this->getParameter('photo'));
+            }
+            $filesystem->copy(
+                $photo->getPathname(),
+                $this->getParameter('photo').'/'.$photoname
+            );
+        }
+    }
+
+    #[Route('/proprietaire/postEntretien', name: 'app_proprietaire_postEntretien', methods: ['POST'])]
+    public function addEntretien(Request $request, Filesystem $filesystem) {
+        $user = $request->request->get('proprio');
+        $plante = $request->request->get('plante');
+
+        $title = $request->request->get('title');
+        $subject = $request->request->get('content');
+        $photo = $request->files->get('photo');
+        $date = DateTimeImmutable::createFromFormat('Y-m-d', date('Y-m-d'));
+        if (!$photo) {
+            throw new FileException('No file uploaded');
+        }
+        $newEntretien = new Entretien();
+        $newEntretien->setTitle($title);
+        $newEntretien->setIntitule($subject);
+        $newEntretien->setDate($date);
+        $newEntretien->setPhoto($photo);
+
+        $this->propriService->addEntretien($user, $plante, $newEntretien);
+
+        if ($photo instanceof UploadedFile) {
+            $photoname = $photo->getClientOriginalName();
+            if (!$filesystem->exists($this->getParameter('photo'))){
+                $filesystem->mkdir($this->getParameter('photo'));
+            }
+            $filesystem->copy(
+                $photo->getPathname(),
+                $this->getParameter('photo').'/'.$photoname
+            );
+        }
     }
 }

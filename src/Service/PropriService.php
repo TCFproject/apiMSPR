@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Entretien;
 use App\Entity\Plante;
+use App\Repository\IEntretienRepo;
 use App\Repository\IPlantRepository;
 use App\Repository\IRoleRepo;
 use App\Repository\IUserRepository;
@@ -44,15 +45,21 @@ class PropriService extends UserService implements IPropriService
     public function addPlante(int $idProprio, Plante $plant): void
     {
         $foundProprio = $this->userRepository->find($idProprio);
-        $foundProprio->addPlante($plant);
+        if ($foundProprio->getRole()->getLabel() == "Proprietaire") {
+            $foundProprio->addPlante($plant);
+            $this->userRepository->save($foundProprio, true);
+        }
     }
 
     public function addEntretien(int $idProprio, int $idPlante, Entretien $entretien): void
     {
         $foundProprio = $this->userRepository->find($idProprio);
         $foundPlante= $this->plantRepository->find($idPlante);
-
         $entretien->setPlant($foundPlante);
-        $foundProprio->addEntretien($entretien, true);
+
+        if ($foundProprio->getRole()->getLabel() == "Proprietaire") {
+            $foundProprio->addEntretien($entretien);
+            $this->userRepository->save($foundProprio, true);
+        }
     }
 }

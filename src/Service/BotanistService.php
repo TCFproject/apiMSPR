@@ -3,8 +3,6 @@
 namespace App\Service;
 
 use App\Entity\Commentary;
-use App\Entity\Plante;
-use App\Entity\User;
 use App\Repository\IPlantRepository;
 use App\Repository\IRoleRepo;
 use App\Repository\IUserRepository;
@@ -45,7 +43,15 @@ class BotanistService extends UserService implements IBotanistService
 
     public function addCommentary(string $comment, int $idPlant, int $idBotanist): void
     {
+        $foundPlant = $this->plantRepository->find($idPlant);
+        $foundBotanist = $this->userRepository->find($idBotanist);
         $newComment = new Commentary();
         $newComment->setComment($comment);
+        $newComment->setPlant($foundPlant);
+
+        if ($foundBotanist->getRole()->getLabel() == "Botaniste") {
+            $foundBotanist->addCommentary($newComment);
+            $this->userRepository->save($foundBotanist, true);
+        }
     }
 }
