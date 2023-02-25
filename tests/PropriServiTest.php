@@ -65,7 +65,14 @@ class PropriServiTest extends KernelTestCase
         $newEntretien->setPhoto("photoEntretien.png");
         $date = DateTimeImmutable::createFromFormat('Y-m-d', date('Y-m-d'));
         $newEntretien->setDate($date);
-        $this->PropriServ->addEntretien(1,1, $newEntretien);
+
+        $foundPropri = $this->PropriServ->signIn("ooo@aaa.fr", "aaaooo");
+        $recupPlant = $this->plantRepository->findOneBy([
+            "nom" => "flower",
+            "nom_latin" => "flower_latin",
+            "photo" => "coucou.png"
+        ]);
+        $this->PropriServ->addEntretien($foundPropri->getId(), $recupPlant->getId(), $newEntretien);
 
         $recupEntretien = $this->entretienRepo->findOneBy([
             "title" => "Entretien 1",
