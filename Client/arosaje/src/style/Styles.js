@@ -20,13 +20,13 @@ export const Container = styled.div`
     max-width: 1000px;
     margin: 0 auto;
     /* background: red; */
-`
+`;
 export const parag = styled.div`
     font-size: 12px;
-`
+`;
 export const RegisterButton = styled.div`
     min-width: 260px;
-`
+`;
    
 export const Column = styled.div`
   display: flex;
@@ -65,3 +65,4 @@ export const Heading = styled.p`
   margin-bottom: 40px;
   font-weight: bold;
 `;
+

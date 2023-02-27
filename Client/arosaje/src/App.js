@@ -1,6 +1,6 @@
 
 import './App.css';
-import { BrowserRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
 import  HomePage from './pages/HomePage';
 import  LoginPage from './pages/LoginPage';
 import React from 'react';
@@ -20,13 +20,14 @@ function App() {
           <div className="App">
               <Navbar />
               <AccountPage />
-              <Footer />
-                <Switch>
+              
+                <Routes>
                 <Route exact path="/" component={HomePage}/>
                 <Route path="/login" component={LoginPage}/>
                 <Route path="/about" component={AboutPage}/>
                 <Route path="/contact" component={ContactPage}/>
-                </Switch>
+                </Routes>
+                <Footer />
                 </div>
 
                 </BrowserRouter>
