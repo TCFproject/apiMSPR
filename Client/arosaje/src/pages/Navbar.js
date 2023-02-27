@@ -1,13 +1,27 @@
 
+import React from 'react';
+import { Link } from 'react-router-dom';
+
 const Navbar = ()=>{
-    const clickOnConnexion = ()=>{
-            console.log('YEEESS!');
-            
-    }
+  
+    // const clickOnBotaniste = ()=>{
+    
+    //     ReactDOM.render(<LoginPage />, document.getElementById('Homepage'))
+           
+    // }
+    // const clickOnConnection=()=>{
+      
+    //   ReactDOM.render(<LoginPage />,document.getElementById('Homepage'))
+ 
+    // }
+    // const clickOnLogo=()=>{
+
+    // }
     return(
+
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
-          <a className="navbar-brand" href="#">A Rosa-je</a>
+          <Link to="/" className="navbar-brand">A Rosa-je</Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -17,28 +31,26 @@ const Navbar = ()=>{
                 <a className="nav-link active" aria-current="page" href="#">Accueil</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">Démarches</a>
+                <Link to="/contact"className="nav-link" href="#">Contact</Link>
               </li>
-              <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Services
-                </a>
-                <ul className="dropdown-menu">
-                  <li><a className="dropdown-item" href="#">Garder des Plantes</a></li>
-                  <li><a className="dropdown-item" href="#">Proposer des plantes à gardé</a></li>
-                  <li><hr className="dropdown-divider"/></li>
-                  <li><a className="dropdown-item" href="#" onClick={clickOnConnexion}>Nos Botanistes sont à votre écoute</a></li>
-                </ul>
+              <li className="nav-item">
+                <Link to="/about" className="nav-link" href="#">A propos</Link>
               </li>
+
 
             </ul>
             <form className="d-flex" role="search">
-              <input className="form-control me-2" type="connexion" placeholder="Rechercher" aria-label="connexion"/>
-              <button className="btn btn-outline-success" type="submit" onClick={clickOnConnexion}>Connexion</button>
+              <input className="form-control me-2" type="recherche" placeholder="Rechercher" aria-label="recherche"/>
+              <button class="btn btn-outline-success" type="submit">Rechercher</button>
+              <Link to="/login" className="btn btn-outline-success" type="submit">Connexion</Link>
             </form>
           </div>
         </div>
-      </nav>   
+      </nav> 
+
+
+
+
     );
 }
 export default Navbar;
