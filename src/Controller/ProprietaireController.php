@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Entretien;
 use App\Entity\Plante;
+use App\Service\FileUploader;
 use App\Service\IPropriService;
 use DateTimeImmutable;
 use Proxies\__CG__\App\Entity\Proprietaire;
@@ -28,11 +29,19 @@ class ProprietaireController extends AbstractController
         $this->propriService = $propriService;
     }
 
-    #[Route('/proprietaire', name: 'app_proprietaire', methods: ['GET'])]
+    #[Route('/proprietaire', name: 'app_proprietaire')]
     public function signIn(Request $request): Response
     {
-        $email = $request->query->get('email');
-        $mdp = $request->query->get('mdp');
+        $email = "";
+        $mdp = "";
+        if ($request->isMethod('POST')) {
+            $email = $request->request->get('email');
+            $mdp = $request->request->get('mdp');
+        } elseif ($request->isMethod('GET')) {
+            $email = $request->query->get('email');
+            $mdp = $request->query->get('mdp');
+        }
+
         $proprietaire = $this->propriService->signIn($email, $mdp);
 
         $encoder = [new JsonEncoder()];
@@ -58,8 +67,8 @@ class ProprietaireController extends AbstractController
     }
 
     #[Route('/proprietaire/newPlant', name: 'app_proprietaire_newPlant', methods: ['POST'])]
-    public function addPlant(Request $request, Filesystem $filesystem){
-        $proprio = $request->request->get("id");
+    public function addPlant(Request $request, FileUploader $fileUploader){
+        $proprio = $request->request->get("proprietaire");
         $photo = $request->files->get('photo');
         $nomPlante = $request->request->get("nom");
         $nom_latinPlante = $request->request->get("nom_latin");
@@ -72,21 +81,12 @@ class ProprietaireController extends AbstractController
         $newPlante->setPhoto($photo->getClientOriginalName());
         $this->propriService->addPlante($proprio, $newPlante);
 
-        if ($photo instanceof UploadedFile) {
-            $photoname = $photo->getClientOriginalName();
-            if (!$filesystem->exists($this->getParameter('photo'))){
-                $filesystem->mkdir($this->getParameter('photo'));
-            }
-            $filesystem->copy(
-                $photo->getPathname(),
-                $this->getParameter('photo').'/'.$photoname
-            );
-        }
+        $fileUploader->upload($photo);
     }
 
     #[Route('/proprietaire/postEntretien', name: 'app_proprietaire_postEntretien', methods: ['POST'])]
-    public function addEntretien(Request $request, Filesystem $filesystem) {
-        $user = $request->request->get('proprio');
+    public function addEntretien(Request $request, FileUploader $fileUploader) {
+        $user = $request->request->get('proprietaire');
         $plante = $request->request->get('plante');
 
         $title = $request->request->get('title');
@@ -104,15 +104,6 @@ class ProprietaireController extends AbstractController
 
         $this->propriService->addEntretien($user, $plante, $newEntretien);
 
-        if ($photo instanceof UploadedFile) {
-            $photoname = $photo->getClientOriginalName();
-            if (!$filesystem->exists($this->getParameter('photo'))){
-                $filesystem->mkdir($this->getParameter('photo'));
-            }
-            $filesystem->copy(
-                $photo->getPathname(),
-                $this->getParameter('photo').'/'.$photoname
-            );
-        }
+        $fileUploader->upload($photo);
     }
 }
