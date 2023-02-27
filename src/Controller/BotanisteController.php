@@ -24,15 +24,23 @@ class BotanisteController extends AbstractController
     #[Route('/botaniste', name: 'app_botaniste')]
     public function index(Request $request): Response
     {
-        $email = $request->request->get('email');
-        $mdp = $request->request->get('mdp');
+        $email = "";
+        $mdp = "";
+        if ($request->isMethod('POST')) {
+            $email = $request->request->get('email');
+            $mdp = $request->request->get('mdp');
+        } elseif ($request->isMethod('GET')) {
+            $email = $request->query->get('email');
+            $mdp = $request->query->get('mdp');
+        }
+
         $botaniste = $this->botanistService->signIn($email, $mdp);
 
         $encoder = [new JsonEncoder()];
         $normalizers = [new ObjectNormalizer()];
         $serializer = new Serializer($normalizers, $encoder);
         $identity = $serializer->serialize($botaniste, 'json', ['circular_reference_handler' => function ($object) {
-            return $object;
+            return $object->getId();
         }]);
         return new Response($identity, headers: ['Content-Type' => 'application/json;charset=UTF-8']);
     }
