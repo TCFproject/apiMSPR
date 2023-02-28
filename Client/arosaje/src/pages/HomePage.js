@@ -20,8 +20,8 @@ const HomePage = () => {
                                   paragraph
                                   variant='h4'   
                                   >
-                                        <span style={{ color:'#2DDE34'}}>Connectez-vous.</span> 
-                                        <span style={{ color:'#2DDE34'}}>Organisez-vous.</span>
+                                        <span style={{ color:'#2DDE34'}}>Connectez-vous.</span> <br />
+                                        <span style={{ color:'#2DDE34'}}>Organisez-vous.</span> <br />
                                         <span>Laissez vos plantes entre de bonnes mains.</span>
                                   </Typography>
                               </Grid><br/><br/>

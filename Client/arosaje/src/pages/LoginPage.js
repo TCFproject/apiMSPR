@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-
-import RegisterPage from './RegisterPage';
-import { ReactDOM, render } from 'react';
 import { Link } from 'react-router-dom';
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -9,12 +6,9 @@ const LoginPage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Vérifiez les informations de connexion ici
+
   };
-  // const clickOnRegister=()=>{
-  //   ReactDOM.render(<RegisterPage />, document.getElementById('Login'));
- 
-  // }
+
 
   return (
 
@@ -34,6 +28,8 @@ const LoginPage = () => {
         onChange={(e) => setPassword(e.target.value)}
         
       /><br/><br/><br/>
+
+
       <Link to="/account" className="btn btn-outline-success" type="submit">Se connecter</Link><br/><br/>
       <Link to="/register" className="btn btn-outline-success" type="submit">Crée un compte</Link>
       

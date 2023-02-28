@@ -2,7 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import "../style/profil.css"
 import profilImage from '../img/Logo_Client.png'
+import LoginPage from './LoginPage';
+import AddPlante from './AddPlante';
 const AccountPage = () => {
+  const addPlante = () =>{
+      //this.state.
+      
+  }
     return (
         <div className="profile-page">
           <div className="left-column">
@@ -14,8 +20,8 @@ const AccountPage = () => {
             <ul>
               <li>Entretiens</li>
               <li>Plantes</li>
-              <Link to="/plantForm" className="btn btn-outline-success" type="submit">Ajouter une plante</Link><br />
-              <Link to="/entretienForm" className="btn btn-outline-success" type="submit">Ajouter un entretien</Link>
+              <button className="btn btn-outline-success" type="submit">Ajouter une plante</button><br />
+              <button  className="btn btn-outline-success" type="submit">Ajouter un entretien</button>
             </ul>
             
           </div>
