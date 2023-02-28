@@ -66,7 +66,7 @@ class ProprietaireController extends AbstractController
         $this->propriService->signUp($name, $lastName, $email, $pwd, $tel);
     }
 
-    #[Route('/proprietaire/newPlant', name: 'app_proprietaire_newPlant', methods: ['POST'])]
+    #[Route('/proprietaire/newPlant', name: 'app_proprietaire_newPlant', methods: ['POST', 'GET'])]
     public function addPlant(Request $request, FileUploader $fileUploader){
         $proprio = $request->request->get("proprietaire");
         $photo = $request->files->get('photo');
