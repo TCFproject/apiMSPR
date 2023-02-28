@@ -18,7 +18,7 @@ framework:
     php_errors:
         log: true
     form:
-        legacy_file_upload: true
+        enabled: true
 when@test:
     framework:
         test: true
