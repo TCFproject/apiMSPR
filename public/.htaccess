@@ -15,6 +15,7 @@ DirectoryIndex index.php
 # to the front controller "/index.php" but be rewritten to "/index.php/index".
 <IfModule mod_negotiation.c>
     Options -MultiViews
+    Header set Access-Control-Allow-Origin "*"
 </IfModule>
 
 <IfModule mod_rewrite.c>
