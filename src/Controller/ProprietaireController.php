@@ -47,7 +47,7 @@ class ProprietaireController extends AbstractController
         $encoder = [new JsonEncoder()];
         $normalizers = [new ObjectNormalizer()];
         $serializer = new Serializer($normalizers, $encoder);
-        $identity = $serializer->serialize($email, 'json', ['circular_reference_handler' => function ($object) {
+        $identity = $serializer->serialize($request->request->all(), 'json', ['circular_reference_handler' => function ($object) {
             return $object->getId();
         }]);
 
