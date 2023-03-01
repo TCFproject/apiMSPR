@@ -65,7 +65,10 @@ class BotanisteController extends AbstractController
         $identity = $serializer->serialize($this->botanistService->getPlant(), 'json', ['circular_reference_handler' => function ($object) {
             return $object->getId();
         }]);
-        return new Response($identity, headers: ['Content-Type' => 'application/json;charset=UTF-8']);
+        $response = new Response($identity);
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->headers->set('Content-Type', 'application/json;charset=UTF-8');
+        return $response;
     }
 
     #[Route('/botaniste/comment', name: 'app_botaniste_comment', methods: ['POST'])]
