@@ -42,9 +42,8 @@ class BotanisteController extends AbstractController
         $identity = $serializer->serialize($botaniste, 'json', ['circular_reference_handler' => function ($object) {
             return $object->getId();
         }]);
-        $response = new Response($identity);
+        $response = new Response($identity, Response::HTTP_OK, ['Content-Type' => 'application/json;charset=UTF-8']);
         $response->headers->set('Access-Control-Allow-Origin', '*');
-        $response->headers->set('Content-Type', 'application/json;charset=UTF-8');
         return $response;
     }
 
@@ -68,9 +67,8 @@ class BotanisteController extends AbstractController
         $identity = $serializer->serialize($this->botanistService->getPlant(), 'json', ['circular_reference_handler' => function ($object) {
             return $object->getId();
         }]);
-        $response = new Response($identity);
+        $response = new Response($identity, Response::HTTP_OK, ['Content-Type' => 'application/json;charset=UTF-8']);
         $response->headers->set('Access-Control-Allow-Origin', '*');
-        $response->headers->set('Content-Type', 'application/json;charset=UTF-8');
         return $response;
     }
 
