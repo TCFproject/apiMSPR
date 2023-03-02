@@ -1,14 +1,21 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "../style/profil.css"
+import "../style/popup.css"
 import profilImage from '../img/Logo_Client.png'
-import LoginPage from './LoginPage';
-import AddPlante from './AddPlante';
+
+import PostContainer from './PostContainer';
+import { accountService } from '../service/accountService';
+
 const AccountPage = () => {
-  const addPlante = () =>{
-      //this.state.
-      
+  let navigate = useNavigate();
+
+  const logout = () =>{
+    accountService.logout()
+    navigate('/');
   }
+// const [buttonAddPlante, setAddPlante] = useState(false);
+// const [buttonAddEntretien, setAddEntretien] = useState(false);
     return (
         <div className="profile-page">
           <div className="left-column">
@@ -18,38 +25,19 @@ const AccountPage = () => {
           <div className="center-column">
             <h4>Client</h4>
             <ul>
-              <li>Entretiens</li>
-              <li>Plantes</li>
-              <button className="btn btn-outline-success" type="submit">Ajouter une plante</button><br />
-              <button  className="btn btn-outline-success" type="submit">Ajouter un entretien</button>
+              <li>Entretiens : <span>0</span></li>
+              <li>Plantes : <span>0</span></li><br /><br />
+              <Link to="addPlante" className="btn btn-outline-success" type="submit">Ajouter une plante</Link><br /><br />
+              <Link to="addEntretien" className="btn btn-outline-success" type="submit">Ajouter un entretien</Link><br /><br />
+              <button onClick={logout} type="button" class="btn btn-warning">Déconnexion</button>
             </ul>
             
           </div>
           
         </div>
-        <div id="post" className="center-column">Annonce
-          <div class="content">
-            <h2>Plante 1</h2>
-            <p>Date de publication</p>
-            <p>A gardé</p>
-            <button>Like</button>
-            {/* <button>Commenter</button> */}
-            <button>Partager</button>
-            <p>#plant #arosaje</p>
-            <a href="#">Lien</a>
-          </div>
-          <div class="content">
-            <h2>Plante 2</h2>
-            <p>Date de publication</p>
-            <p>A gardé</p>
-            <button>Like</button>
-            <button>Partager</button>
-            <p>#plant #arosaje</p>
-            <a href="#">Lien</a>
-          </div>
-          
-        </div>
-            
+        <PostContainer />
+        {/* <AddEntretien trigger={buttonAddEntretien} setTrigger={setAddEntretien}>
+          </AddEntretien> */}
         </div>
       );
 }

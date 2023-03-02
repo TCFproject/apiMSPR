@@ -52,6 +52,8 @@ export const FooterLink = styled.a`
   margin-bottom: 20px;
   font-size: 18px;
   text-decoration: none;
+  position: absolute;
+  bottom: 0;
    
   &:hover {
       color: green;

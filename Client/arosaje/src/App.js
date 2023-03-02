@@ -10,6 +10,9 @@ import ContactPage from './pages/ContactPage';
 import Footer from './pages/Footer';
 import AccountPage from './pages/AccountPage';
 import RegisterPage from './pages/RegisterPage';
+import ErrorPage from './util/ErrorPage';
+import AddPlante from './pages/AddPlante';
+import AddEntretien from './pages/AddEntretien';
 
 function App() {
   return (
@@ -23,6 +26,9 @@ function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/account" element={<AccountPage />} />
+          <Route path="/account/addPlante" element={<AddPlante />} />
+          <Route path="/account/addEntretien" element={<AddEntretien />} />
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
         <Footer />
       </div>
