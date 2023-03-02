@@ -38,7 +38,13 @@ class BotanistService extends UserService implements IBotanistService
 
     public function getPlant()
     {
-        return $this->plantRepository->findAll();
+        $allPlants = $this->plantRepository->findAll();
+        foreach ($allPlants as $plant) {
+            $plant->getCommentaries()->clear();
+            $plant->getEntretiens()->clear();
+            $plant->setUser(null);
+        }
+        return $allPlants;
     }
 
     public function addCommentary(string $comment, int $idPlant, int $idBotanist): void
