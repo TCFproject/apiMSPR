@@ -1,20 +1,10 @@
 nelmio_cors:
     defaults:
-        allow_credentials: false
-        allow_origin: [ '*' ]
-        allow_headers: [ 'Content-Type', 'Authorization' ]
-        allow_methods: [ 'GET', 'POST', 'PUT', 'DELETE' ]
+        origin_regex: true
+        allow_origin: ['*']
+        allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
+        allow_headers: ['*']
+        expose_headers: ['Link']
         max_age: 3600
-        hosts: [ ]
-        origin_regex: false
     paths:
-        '^/botaniste/list':
-            allow_origin: [ '*' ]
-            allow_headers: [ 'Content-Type', 'Authorization' ]
-            allow_methods: [ 'GET', 'POST', 'PUT', 'DELETE' ]
-            max_age: 3600
-        '^/proprietaire':
-            allow_origin: [ '*' ]
-            allow_headers: [ 'Content-Type', 'Authorization' ]
-            allow_methods: [ 'GET', 'POST', 'PUT', 'DELETE' ]
-            max_age: 3600
+        '^/': ~
