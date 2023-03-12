@@ -19,16 +19,7 @@ function PostContainer() {
       
     //  }
     
-      // axios.get('http://reader-saga.com/botaniste/list',{mode: 'no-cors'})
-      //   .then(response => {
-      //       //setEntretien(response.data)
-      //       console.log(response.data);
-      //     })
-            
-              
-      //   .catch(error => {
-      //        console.log(error);
-      // });
+     
 
 
     
@@ -49,21 +40,24 @@ function PostContainer() {
     // }
 
      useEffect(()=> {
-      fetch('http://reader-saga.com/botaniste/list', { method: 'get', mode:'no-cors'})
+      fetch('http://arosaje-env-1.eba-yzz9mn8c.eu-west-3.elasticbeanstalk.com/api/v1/plante/getAll')
       
       .then(response => {
-         //console.log(response);
-        return response.json()
+        
+        
+         console.log(response);
+      return   response.json()
       })
       .then(data => {
         
-        setEntretien(data)})
+      console.log(data);
+        setEntretien(data.sort((a,b)=>b.id - a.id))})
         .catch(error => {
         
-          //console.error(error);
+          console.error(error);
           });
-     console.log(entretiens);
-     }, []);
+
+     });
      
 
 
@@ -83,8 +77,9 @@ function PostContainer() {
                  
                   <div className="content">
                         <h2>{entretien.nom}</h2> 
-                        <h2>{entretien.nomLatin}</h2>
-                        <p>A gardé</p>
+                        <h2>{entretien.type}</h2>
+                        <h2>A gardé</h2>
+                        <p>{entretien.description}</p>
                         <button>Envoyer une demande de garde</button>
                         
                   </div>  

@@ -36,6 +36,7 @@ const LoginPage = () => {
     } catch (error) {
       //console.error(error);
     }
+    navigate('/account')
   }
   return (
 

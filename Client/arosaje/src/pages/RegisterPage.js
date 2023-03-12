@@ -20,7 +20,7 @@ const RegisterPage = () => {
     const form = event.target;
     const formData = new FormData(form);
     try {
-      const response = await axios.post('http://reader-saga.com/proprietaire/new', formData);
+      const response = await axios.post('http://arosaje-env-1.eba-yzz9mn8c.eu-west-3.elasticbeanstalk.com/api/v1/gardien', formData);
       const data = response.data;
       console.log(data);
       
