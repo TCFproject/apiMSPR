@@ -58,7 +58,3 @@ services:
     App\Service\IPropriService:
         class: 'App\Service\PropriService'
         public: true
-
-    App\Service\FileUploader:
-        arguments:
-            $targetDirectory: '%kernel.project_dir%\public\photo'
