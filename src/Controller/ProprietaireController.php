@@ -51,7 +51,10 @@ class ProprietaireController extends AbstractController
             return $object->getId();
         }]);
 
-        return new Response($identity, headers: ['Content-Type' => 'application/json;charset=UTF-8']);
+        $response = new Response($identity);
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->headers->set('Content-Type', 'application/json;charset=UTF-8');
+        return $response;
     }
 
     #[Route('/proprietaire/new', name: 'app_proprietaire_new', methods: ['POST'])]
@@ -66,7 +69,7 @@ class ProprietaireController extends AbstractController
         $this->propriService->signUp($name, $lastName, $email, $pwd, $tel);
     }
 
-    #[Route('/proprietaire/newPlant', name: 'app_proprietaire_newPlant', methods: ['POST'])]
+    #[Route('/proprietaire/newPlant', name: 'app_proprietaire_newPlant', methods: ['POST', 'GET'])]
     public function addPlant(Request $request, FileUploader $fileUploader){
         $proprio = $request->request->get("proprietaire");
         $photo = $request->files->get('photo');
@@ -84,7 +87,7 @@ class ProprietaireController extends AbstractController
         $fileUploader->upload($photo);
     }
 
-    #[Route('/proprietaire/postEntretien', name: 'app_proprietaire_postEntretien', methods: ['POST'])]
+    #[Route('/proprietaire/postEntretien', name: 'app_proprietaire_postEntretien', methods: ['POST', 'GET'])]
     public function addEntretien(Request $request, FileUploader $fileUploader) {
         $user = $request->request->get('proprietaire');
         $plante = $request->request->get('plante');
