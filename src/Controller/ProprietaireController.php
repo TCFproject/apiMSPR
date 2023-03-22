@@ -84,12 +84,12 @@ class ProprietaireController extends AbstractController
         $newPlante->setPhoto($photo->getClientOriginalName());
         $this->propriService->addPlante($proprio, $newPlante);
 
-        $fileUploader->upload($photo);
+        $filesystem->upload($photo);
     }
 
-    #[Route('/proprietaire/postEntretien', name: 'app_proprietaire_postEntretien', methods: ['POST', 'GET'])]
-    public function addEntretien(Request $request, FileUploader $fileUploader) {
-        $user = $request->request->get('proprietaire');
+    #[Route('/proprietaire/postEntretien', name: 'app_proprietaire_postEntretien', methods: ['POST'])]
+    public function addEntretien(Request $request, Filesystem $filesystem) {
+        $user = $request->request->get('proprio');
         $plante = $request->request->get('plante');
 
         $title = $request->request->get('title');
