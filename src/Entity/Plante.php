@@ -152,4 +152,15 @@ class Plante
 
         return $this;
     }
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'nom' => $this->getNom(),
+            'nomLatin' => $this->getNomLatin(),
+            'photo' => $this->getPhoto(),
+            'user' => $this->getUser(),
+        ];
+    }
+
 }
