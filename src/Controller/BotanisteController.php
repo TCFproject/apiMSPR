@@ -24,23 +24,15 @@ class BotanisteController extends AbstractController
     #[Route('/botaniste', name: 'app_botaniste')]
     public function index(Request $request): Response
     {
-        $email = "";
-        $mdp = "";
-        if ($request->isMethod('POST')) {
-            $email = $request->request->get('email');
-            $mdp = $request->request->get('mdp');
-        } elseif ($request->isMethod('GET')) {
-            $email = $request->query->get('email');
-            $mdp = $request->query->get('mdp');
-        }
-
+        $email = $request->request->get('email');
+        $mdp = $request->request->get('mdp');
         $botaniste = $this->botanistService->signIn($email, $mdp);
 
         $encoder = [new JsonEncoder()];
         $normalizers = [new ObjectNormalizer()];
         $serializer = new Serializer($normalizers, $encoder);
         $identity = $serializer->serialize($botaniste, 'json', ['circular_reference_handler' => function ($object) {
-            return $object->getId();
+            return $object;
         }]);
         $response = new Response($identity);
         $response->headers->set('Access-Control-Allow-Origin', '*');
@@ -81,5 +73,13 @@ class BotanisteController extends AbstractController
         $plante = $request->request->get('plante');
         $comment = $request->request->get('commentaire');
         $this->botanistService->addCommentary($comment, $plante, $intitule);
+    }
+
+    #[Route('/botaniste/authTest', name: 'app_botaniste_Test', methods: ['POST'])]
+    public function authentData(Request $request): Response {
+        return $this->json([
+            'username' => "Hello",
+            'email' => "World"
+        ]);
     }
 }

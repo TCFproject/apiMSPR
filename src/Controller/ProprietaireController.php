@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Entretien;
 use App\Entity\Plante;
-use App\Service\FileUploader;
 use App\Service\IPropriService;
 use DateTimeImmutable;
 use Proxies\__CG__\App\Entity\Proprietaire;
@@ -29,19 +28,11 @@ class ProprietaireController extends AbstractController
         $this->propriService = $propriService;
     }
 
-    #[Route('/proprietaire', name: 'app_proprietaire')]
+    #[Route('/proprietaire', name: 'app_proprietaire', methods: ['GET'])]
     public function signIn(Request $request): Response
     {
-        $email = "";
-        $mdp = "";
-        if ($request->isMethod('POST')) {
-            $email = $request->request->get('email');
-            $mdp = $request->request->get('mdp');
-        } elseif ($request->isMethod('GET')) {
-            $email = $request->query->get('email');
-            $mdp = $request->query->get('mdp');
-        }
-
+        $email = $request->query->get('email');
+        $mdp = $request->query->get('mdp');
         $proprietaire = $this->propriService->signIn($email, $mdp);
 
         $encoder = [new JsonEncoder()];
@@ -116,6 +107,15 @@ class ProprietaireController extends AbstractController
 
         $this->propriService->addEntretien($user, $plante, $newEntretien);
 
-        $fileUploader->upload($photo);
+        if ($photo instanceof UploadedFile) {
+            $photoname = $photo->getClientOriginalName();
+            if (!$filesystem->exists($this->getParameter('photo'))){
+                $filesystem->mkdir($this->getParameter('photo'));
+            }
+            $filesystem->copy(
+                $photo->getPathname(),
+                $this->getParameter('photo').'/'.$photoname
+            );
+        }
     }
 }

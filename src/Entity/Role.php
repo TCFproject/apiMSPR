@@ -18,33 +18,28 @@ class Role
     #[ORM\Column(length: 255)]
     private ?string $label = null;
 
-    #[ORM\OneToMany(mappedBy: 'role', targetEntity: User::class)]
+    #[ORM\OneToMany(mappedBy: 'role', targetEntity: Users::class)]
     private Collection $users;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->users = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
+    public function getId(): ?int {
         return $this->id;
     }
 
-    public function getLabel(): ?string
-    {
+    public function getLabel(): ?string {
         return $this->label;
     }
 
-    public function setLabel(string $label): self
-    {
+    public function setLabel(string $label): self {
         $this->label = $label;
 
         return $this;
     }
 
-    public function addUser(User $user): self
-    {
+    public function addUser(Users $user): self {
         if (!$this->users->contains($user)) {
             $this->users->add($user);
             $user->setRole($this);
@@ -53,8 +48,7 @@ class Role
         return $this;
     }
 
-    public function removeUser(User $user): self
-    {
+    public function removeUser(Users $user): self {
         if ($this->users->removeElement($user)) {
             // set the owning side to null (unless already changed)
             if ($user->getRole() === $this) {
