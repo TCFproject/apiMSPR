@@ -71,7 +71,7 @@ class ProprietaireController extends AbstractController
 
     #[Route('/proprietaire/newPlant', name: 'app_proprietaire_newPlant', methods: ['POST', 'GET'])]
     public function addPlant(Request $request, FileUploader $fileUploader){
-        $proprio = $request->request->get("proprietaire");
+        $proprio = $request->request->get("id");
         $photo = $request->files->get('photo');
         $nomPlante = $request->request->get("nom");
         $nom_latinPlante = $request->request->get("nom_latin");
