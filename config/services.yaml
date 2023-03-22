@@ -24,7 +24,7 @@ services:
     # please note that last definitions always *replace* previous ones
 
     App\Repository\IUserRepository:
-        class: 'App\Repository\UserRepository'
+        class: 'App\Repository\UsersRepository'
         public: true
 
     App\Repository\IPlantRepository:

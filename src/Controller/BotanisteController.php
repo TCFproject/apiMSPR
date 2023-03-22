@@ -67,4 +67,12 @@ class BotanisteController extends AbstractController
         $comment = $request->request->get('commentaire');
         $this->botanistService->addCommentary($comment, $plante, $intitule);
     }
+
+    #[Route('/botaniste/authTest', name: 'app_botaniste_Test', methods: ['POST'])]
+    public function authentData(Request $request): Response {
+        return $this->json([
+            'username' => "Hello",
+            'email' => "World"
+        ]);
+    }
 }

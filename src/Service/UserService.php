@@ -2,12 +2,13 @@
 
 namespace App\Service;
 
-use App\Entity\User;
+use App\Entity\Users;
 use App\Repository\IUserRepository;
+use App\Repository\UserRepository;
 
 class UserService implements IUserService
 {
-    protected User $user;
+    protected Users $user;
     protected IUserRepository $userRepository;
 
     public function __construct(IUserRepository $userRepository)
@@ -18,7 +19,7 @@ class UserService implements IUserService
     public function signUp(string $name, string $lastname, string $email, string $psw, string $tel): void
     {
         // TODO: Implement signUp() method.
-        $this->user = new User();
+        $this->user = new Users();
         $this->user->setName($name);
         $this->user->setLastname($lastname);
         $this->user->setEmail($email);

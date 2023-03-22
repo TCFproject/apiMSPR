@@ -22,44 +22,37 @@ class Commentary
 
     #[ORM\ManyToOne(inversedBy: 'commentaries')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    private ?Users $user = null;
 
-    public function getId(): ?int
-    {
+    public function getId(): ?int {
         return $this->id;
     }
 
-    public function getComment(): ?string
-    {
+    public function getComment(): ?string {
         return $this->comment;
     }
 
-    public function setComment(string $comment): self
-    {
+    public function setComment(string $comment): self {
         $this->comment = $comment;
 
         return $this;
     }
 
-    public function getPlant(): ?Plante
-    {
+    public function getPlant(): ?Plante {
         return $this->plant;
     }
 
-    public function setPlant(?Plante $plant): self
-    {
+    public function setPlant(?Plante $plant): self {
         $this->plant = $plant;
 
         return $this;
     }
 
-    public function getUser(): ?User
-    {
+    public function getUser(): ?Users {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
-    {
+    public function setUser(?Users $user): self {
         $this->user = $user;
 
         return $this;
